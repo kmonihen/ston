@@ -1,8 +1,11 @@
 name: Build & Deploy
 
 on:
-  repository_dispatch:
-    types: [release]
+  push:
+    tags:
+      - 'v*.*.*'
+#  repository_dispatch:
+#    types: [release]
 
 jobs:
   build:
