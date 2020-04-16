@@ -1,0 +1,32 @@
+# Push with a commit message containing `#major` to bump major version
+# and update the major version number here.
+
+# MAJOR Version: 1.x
+
+name: Bump Version
+
+on:
+  push:
+    branches:
+      - master
+    tags-ignore:
+      - '**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+      with:
+        fetch-depth: '0'
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.19.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
+        DEFAULT_BUMP: minor
+    - name: Trigger release
+      uses: peter-evans/repository-dispatch@v1.0.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        event-type: release
